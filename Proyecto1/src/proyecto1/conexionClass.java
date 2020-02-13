@@ -63,6 +63,41 @@ public class conexionClass {
         return sql;
     }
     
+    public String truncateTable(String tbl_name){
+        String sql = "TRUNCATE TABLE " + tbl_name;
+        return sql;
+    }
+    
+    public String dropUser(String username){
+        String sql = "DROP USER " + username;
+        return sql;
+    }
+    
+    public String dropView(String view){
+        String sql = "DROP VIEW " + view;
+        return sql;
+    }
+    
+    public String dropTrigger(String trigger){
+        String sql = "DROP TRIGGER " + trigger;
+        return sql;
+    }
+    
+    public String dropDB(String database){
+        String sql = "DROP DATABSE " + database;
+        return sql;
+    }
+    
+    public String dropIndex(String index){
+        String sql = "DROP INDEX " + index;
+        return sql;
+    }
+    
+    public String dropProcedure(String procedure){
+        String sql = "DROP PROCEDURE " + procedure;
+        return sql;
+    }
+    
     public String createTable(String tbl_name, String val1, String val2, String val3, String val4){
         val1 = "";
         val2 = "";
@@ -74,6 +109,11 @@ public class conexionClass {
     
     public String createUser(String username, String password){
         String sql = "CREATE USER " + username + " IDENTIFIED BY " + password;
+        return sql;
+    }
+    
+    public String createTrigger(String triggerName, String tbl_name, String triggerType, String statement){
+        String sql = "CREATE TRIGGER " + triggerName + " ON " + tbl_name + " FOR " + triggerType + " AS " + statement;
         return sql;
     }
     
