@@ -13,10 +13,10 @@ import java.sql.*;
  */
 public class conexionClass {
     
-    public static Connection conexionF(String user, String pass){
+    public static Connection conexionF(String DB, String user, String pass){
         try {
             Class.forName( "com.sybase.jdbc4.jdbc.SybDriver" ).newInstance();
-            Connection con = DriverManager.getConnection("jdbc:sybase:Tds:localhost:5000/PROD",user,pass);
+            Connection con = DriverManager.getConnection("jdbc:sybase:Tds:localhost:5000/"+DB,user,pass);
             con.commit();
             if(con != null){
                 return con;
@@ -49,7 +49,7 @@ public class conexionClass {
     }
     
     public String showUsers(){
-        String sql = "select name as user_name from sysusers";
+        String sql = "select name from syslogins";
         return sql;
     }
     
@@ -63,13 +63,18 @@ public class conexionClass {
         return sql;
     }
     
-    public String truncateTable(String tbl_name){
-        String sql = "TRUNCATE TABLE " + tbl_name;
+    public String showTableContent(String tbl_name){
+        String sql = "SELECT * FROM " + tbl_name;
+        return sql;
+    }
+    
+    public String dropTable(String tbl_name){
+        String sql = "DROP TABLE " + tbl_name;
         return sql;
     }
     
     public String dropUser(String username){
-        String sql = "DROP USER " + username;
+        String sql = "DROP LOGIN " + username;
         return sql;
     }
     
@@ -98,22 +103,54 @@ public class conexionClass {
         return sql;
     }
     
-    public String createTable(String tbl_name, String val1, String val2, String val3, String val4){
-        val1 = "";
-        val2 = "";
-        val3 = "";
-        val4 = "";
-        String sql = "CREATE TABLE " + tbl_name + "( " + val1 + " , " + val2 + " , " + val3 + " , " + val4 + ") ";
+    public String createTable(String tbl_name, String val1, String val2, String val3, String val4, String val5){
+        String sql = "CREATE TABLE " + tbl_name;
+        if(!val1.equalsIgnoreCase("")){
+            sql += " (" + val1;
+        }
+        if(!val2.equalsIgnoreCase("")){
+            sql += ", " + val2;
+        }
+        if(!val3.equalsIgnoreCase("")){
+            sql += ", " + val3;
+        }
+        if(!val4.equalsIgnoreCase("")){
+            sql += ", " + val4;
+        }
+        if(!val5.equalsIgnoreCase("")){
+            sql +=", " + val5;
+        }
+        sql += ")";
         return sql;
     }
     
     public String createUser(String username, String password){
-        String sql = "CREATE USER " + username + " IDENTIFIED BY " + password;
+        String sql = "CREATE LOGIN " + username + " with password " + password;
         return sql;
     }
     
-    public String createTrigger(String triggerName, String tbl_name, String triggerType, String statement){
-        String sql = "CREATE TRIGGER " + triggerName + " ON " + tbl_name + " FOR " + triggerType + " AS " + statement;
+    public String createTrigger(String triggerName, String tbl_name, String triggerType, String stmt){
+        String sql = "CREATE TRIGGER " + triggerName + " ON " + tbl_name + " FOR " + triggerType + " AS " + stmt;
+        return sql;
+    }
+    
+    public String createProcedure(String procName, String procType, String stmt){
+        String sql = "CREATE PROCEDURE " + procName + " " + procType + " AS " + stmt;
+        return sql;
+    }
+    
+    public String createIndex(String indexName, String tbl_name){
+        String sql = "CREATE INDEX " + indexName + " ON " + tbl_name;
+        return sql;
+    }
+    
+    public String createDB(String DBName){
+        String sql = "CREATE DATABASE " + DBName;
+        return sql;
+    }
+    
+    public String createView(String viewName, String stmt){
+        String sql = "CREATE VIEW " + viewName + " AS " + stmt;
         return sql;
     }
     
